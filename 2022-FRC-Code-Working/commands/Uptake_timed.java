@@ -1,27 +1,30 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class Uptake extends CommandBase
+public class Uptake_timed extends CommandBase
 {  
     public static ShooterSubsystem mShooterSubsystem;
-    private Joystick mDriverController;
+    Timer my_timer = new Timer();
+    double timeout = 0;
 
-    public Uptake(Joystick m_driver_controller)
+    public Uptake_timed( double t )
     {
-        mDriverController = m_driver_controller;
         mShooterSubsystem = RobotContainer.m_shooter;
+        timeout = t;
     }
     
     
     @Override
     public void initialize()
     {
+        my_timer.reset();
         mShooterSubsystem.setUptakeMotor(Constants.kUptakeSpeed);
+        my_timer.start();
     }
     
     @Override
@@ -32,7 +35,7 @@ public class Uptake extends CommandBase
     @Override
     public boolean isFinished()
     {
-        return !mDriverController.getRawButton(Constants.kUptakeBtn );
+        return my_timer.hasElapsed(timeout);
     }
     
     @Override

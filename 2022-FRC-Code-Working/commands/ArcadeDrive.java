@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -15,13 +8,12 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 
 
 public class ArcadeDrive extends CommandBase {
-  //Creates a new ArcadeDrive.
-  private Joystick mDriverController;
-  private static DrivetrainSubsystem m_drivetrain;
+
+  public Joystick mDriverController;
+  public static DrivetrainSubsystem m_drivetrain;
   
   public ArcadeDrive(Joystick m_driverController, DrivetrainSubsystem m_driveTrain) 
   {
-    // Use addRequirements() here to declare subsystem dependencies.
     m_drivetrain = m_driveTrain;
     mDriverController = m_driverController;
 
@@ -32,17 +24,22 @@ public class ArcadeDrive extends CommandBase {
   @Override
   public void initialize()
   {
-    m_drivetrain.arcadeDrive(0, 0);
-    RobotContainer.m_vision.setString( "[ARCADE DRIVE] Initialized and Zeroed" );
+	m_drivetrain.arcadeDrive(0, 0);
+	//RobotContainer.ahrs.reset();
+	//RobotContainer.ahrs.zeroYaw();
   }
   
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
   {
+	//SmartDashboard.putNumber("IMU_CompassHeading", RobotContainer.ahrs.getCompassHeading() );
+
     double moveSpeed = mDriverController.getRawAxis(Constants.Controls.DRIVER_CONTROLLER_MOVE_AXIS);
     double rotateSpeed = mDriverController.getRawAxis(Constants.Controls.DRIVER_CONTROLLER_ROTATE_AXIS);
-    m_drivetrain.arcadeDrive(0.25*rotateSpeed, 0.25*moveSpeed);
+    
+    m_drivetrain.arcadeDrive(0.5*rotateSpeed, 0.7*moveSpeed);
+    // rotateSpeed and moveSpeed might be incorrectly swapped
   }
   
   // Called once the command ends or is interrupted.

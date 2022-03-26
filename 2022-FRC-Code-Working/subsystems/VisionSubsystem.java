@@ -21,7 +21,7 @@ public class VisionSubsystem extends SubsystemBase
         m_visionThread = new Thread( () ->
         {
             UsbCamera camera = CameraServer.startAutomaticCapture();
-            camera.setResolution(1280, 768);
+            camera.setResolution(640, 480);
             CvSink cvSink = CameraServer.getVideo();
             CvSource outputStream = CameraServer.putVideo("Processed Stream",640,480);
             Mat mat=new Mat();
@@ -32,8 +32,8 @@ public class VisionSubsystem extends SubsystemBase
                     outputStream.notifyError(cvSink.getError());
                     continue;
                 }
-                Imgproc.rectangle(mat, new Point(0,0), new Point(1280,75), new Scalar(0,0,0),-1);
-                Imgproc.putText( mat, my_string, new Point(30,40), Imgproc.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar( 255, 255, 255 ));
+                //Imgproc.rectangle(mat, new Point(0,0), new Point(1280,75), new Scalar(0,0,0),-1);
+                //Imgproc.putText( mat, my_string, new Point(30,40), Imgproc.FONT_HERSHEY_COMPLEX_SMALL, 2, new Scalar( 255, 255, 255 ));
                 outputStream.putFrame(mat);
             }
         });

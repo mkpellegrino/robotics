@@ -1,35 +1,32 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.IntakeSubsystem;
 
-//import java.io.OutputStream;
-//import javax.print.event.PrintEvent;
-//import edu.wpi.first.networktables.LogMessage;
+public class SpinSpinner_timed extends CommandBase
+{  
+    public static IntakeSubsystem mIntakeSubsystem;
+    Timer my_timer = new Timer();
+    double timeout = 0;
 
-public class SpinSpinner extends CommandBase
-{
-    // the subsystems that this command accesses
-    //private IntakeSubsystem mIntake;
-    private static IntakeSubsystem mIntakeSubsystem;
-    private Joystick mDriverController;
-    
-    public SpinSpinner(Joystick m_driver_controller)
+    public SpinSpinner_timed( double t )
     {
-        mDriverController = m_driver_controller;
         mIntakeSubsystem = RobotContainer.m_intake;
+        timeout = t;
         //addRequirements(RobotContainer.m_intake);
+
     }
     
     
     @Override
     public void initialize()
     {
+        my_timer.reset();
         mIntakeSubsystem.setSpinnerMotor(Constants.kIntakeSpinnerSpeed);
-
+        my_timer.start();
     }
     
     @Override
@@ -40,7 +37,7 @@ public class SpinSpinner extends CommandBase
     @Override
     public boolean isFinished()
     {
-        return !mDriverController.getRawButton(Constants.kSpinnerBtn );
+        return my_timer.hasElapsed(timeout);
     }
     
     @Override

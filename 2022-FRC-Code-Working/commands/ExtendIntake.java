@@ -11,43 +11,38 @@ public class ExtendIntake extends CommandBase
     private static IntakeSubsystem mIntakeSubsystem;
     private Joystick mDriverController;
 
-    // the subsystems that this command accesses
     public ExtendIntake(Joystick m_driver_controller)
     {
         mIntakeSubsystem = RobotContainer.m_intake;
         mDriverController = m_driver_controller;
+        addRequirements(RobotContainer.m_intake);
     }
     
     @Override
     public void initialize()
     {
-        // stop the motor before changing direction
-        RobotContainer.m_vision.setString( "[EXTEND INTAKE] Initializing..." );
-        mIntakeSubsystem.setActuatorMotor(0);
-    
-        mIntakeSubsystem.setActuatorMotor(Constants.kIntakeActuatorExtendSpeed);
+        /* check to see if the front limit switch returns
+        true.  if it does, then DON'T set the motor, or
+        set the motor to 0 */
+        if( mIntakeSubsystem.frontLimitSwitch() ) return;
 
+        mIntakeSubsystem.setActuatorMotor(Constants.kIntakeActuatorExtendSpeed);
     }
     
     @Override
     public void execute()
     {
-        // nothing really need to be done here
-        // the Actuator motor is turned on during
-        // initialize(); and then turned off during end();
     }
     
     @Override
     public boolean isFinished()
     {
-        return !mDriverController.getRawButton( Constants.kIntakeExtendBtn );
+		return (!mDriverController.getRawButton( Constants.kIntakeExtendBtn ) || mIntakeSubsystem.frontLimitSwitch() );
     }
     
     @Override
     public void end(boolean interrupted)
     {
         mIntakeSubsystem.setActuatorMotor(0);
-
-        // maybe we should add the "retract" command to the scheduler here?
     }
 }

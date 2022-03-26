@@ -4,40 +4,40 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 
-public class Uptake extends CommandBase
-{  
-    public static ShooterSubsystem mShooterSubsystem;
+public class DeployHookLower extends CommandBase
+{
+    private static ClimberSubsystem mClimberSubsystem;
     private Joystick mDriverController;
 
-    public Uptake(Joystick m_driver_controller)
+    public DeployHookLower(Joystick m_driver_controller)
     {
+        mClimberSubsystem = RobotContainer.m_climber;
         mDriverController = m_driver_controller;
-        mShooterSubsystem = RobotContainer.m_shooter;
     }
-    
     
     @Override
     public void initialize()
     {
-        mShooterSubsystem.setUptakeMotor(Constants.kUptakeSpeed);
+        mClimberSubsystem.setDeployHookMotor(Constants.kDeployHookSpeedDown);
     }
     
     @Override
     public void execute()
     {
-    }
+
+       }
     
     @Override
     public boolean isFinished()
     {
-        return !mDriverController.getRawButton(Constants.kUptakeBtn );
-    }
+		return !mDriverController.getRawButton( Constants.kDeployHookDownBtn );
+	}
     
     @Override
     public void end(boolean interrupted)
     {
-        mShooterSubsystem.setUptakeMotor(0);
+        mClimberSubsystem.setDeployHookMotor(0);
     }
 }

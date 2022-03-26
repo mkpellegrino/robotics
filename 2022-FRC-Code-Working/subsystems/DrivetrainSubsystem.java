@@ -1,9 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
 
 package frc.robot.subsystems;
 
@@ -16,23 +10,19 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 public class DrivetrainSubsystem extends SubsystemBase
 {
-  /**
-  * Creates a new Drivetrain.
-  */
   public static DrivetrainSubsystem instance = null;
   
   private CANSparkMax frontRightMotor;
   private CANSparkMax frontLeftMotor;
   private CANSparkMax backRightMotor;
   private CANSparkMax backLeftMotor;
-
+  
   DifferentialDrive differentialDrive;
   
   
   public DrivetrainSubsystem()
   {
     
-    //settings motors
     frontRightMotor = new CANSparkMax(Constants.DrivingTrain.FRONT_RIGHT_ID, MotorType.kBrushless);
     frontLeftMotor = new CANSparkMax(Constants.DrivingTrain.FRONT_LEFT_ID, MotorType.kBrushless);
     backRightMotor = new CANSparkMax(Constants.DrivingTrain.BACK_RIGHT_ID, MotorType.kBrushless);
@@ -42,6 +32,7 @@ public class DrivetrainSubsystem extends SubsystemBase
     MotorControllerGroup leftMotors = new MotorControllerGroup(frontLeftMotor, backLeftMotor);
     
     differentialDrive = new DifferentialDrive(rightMotors, leftMotors);
+    
   }
   
   public void arcadeDrive(double moveSpeed, double rotateSpeed)

@@ -2,11 +2,10 @@
 
   import edu.wpi.first.wpilibj2.command.SubsystemBase;
   import frc.robot.Constants;
-
-  import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
+import edu.wpi.first.wpilibj.DigitalInput;
 
   /* this subsystem is for the 2 motors that control the intake of a ball */
   /* there's a motor that spins to get the ball - called the 'spinner' */
@@ -17,21 +16,42 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
     public static IntakeSubsystem instance;
     public static WPI_VictorSPX mSpinnerMotor;
     public static WPI_TalonSRX mActuatorMotor;
+    
+    //limit switches
+    public static DigitalInput mFrontLimitSwitch;
+    public static DigitalInput mBackLimitSwitch;
 
     // constructor
     public IntakeSubsystem()
     {
+      //motors
       mSpinnerMotor = new WPI_VictorSPX( Constants.kMCIDSpinner );
       mActuatorMotor = new WPI_TalonSRX( Constants.kMCIDActuator );
+      
+      //limit switches 
+      //!!CHECK THE PORTS ON THE LIMIT SWITCHES TO MAKE SURE THEY ARE RIGHT!!
+      //we can set the port values as Constants later if we want to
+      mFrontLimitSwitch = new DigitalInput(Constants.kFrontLimitSwitchDIOPort); //set port value here
+      mBackLimitSwitch = new DigitalInput(Constants.kBackLimitSwitchDIOPort); //set port value here
     }
     
     // Subsystem methods - actions the robot can take - should be placed here.
     public void setActuatorMotor(double speed)
     {
-      mActuatorMotor.set(ControlMode.PercentOutput, speed);
-    }
-    
-    public void setSpinnerMotor(double speed)
+    //was initially just this
+    mActuatorMotor.set(ControlMode.PercentOutput, speed);
+    } 
+	public boolean frontLimitSwitch()
+	{
+		return mFrontLimitSwitch.get();
+	}
+
+	public boolean backLimitSwitch()
+	{
+		return mBackLimitSwitch.get();
+	}
+
+  public void setSpinnerMotor(double speed)
     {
       mSpinnerMotor.set(ControlMode.PercentOutput, speed);
     }
@@ -48,12 +68,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
     @Override
     public void periodic() 
     {
-      // This method will be called once per scheduler run
     }
     
     @Override
     public void simulationPeriodic() 
     {
-      // This method will be called once per scheduler run during simulation
     }
   }
